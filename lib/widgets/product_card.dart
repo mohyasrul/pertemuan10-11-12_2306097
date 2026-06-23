@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import '../models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
@@ -22,6 +23,17 @@ class ProductCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: ListTile(
         onTap: onTap,
+        leading: product.image != null && product.image!.isNotEmpty
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.memory(
+                  base64Decode(product.image!),
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const Icon(Icons.image, size: 50),
         title: Text(
           product.name,
           style: const TextStyle(fontWeight: FontWeight.w600),
@@ -45,14 +57,15 @@ class ProductCard extends StatelessWidget {
           children: [
             if (onEdit != null)
               IconButton(
-                icon: const Icon(Icons.edit, color: Colors.blue),
-                onPressed: onEdit,
-              ),
+                icon: const Icon(Icons.edit, color: Colors.green),
+                onPressed: () => onEdit!(),
+              ), // IconButton
+            const SizedBox(width: 10),
             if (onDelete != null)
               IconButton(
                 icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: onDelete,
-              ),
+                onPressed: () => onDelete!(),
+              ), // IconButton
           ],
         ),
       ),
